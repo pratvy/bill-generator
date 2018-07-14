@@ -1,0 +1,78 @@
+<HTML>
+	<HEAD>
+		<TITLE> Add/Remove dynamic rows in HTML table </TITLE>
+		<SCRIPT language="javascript">
+			function addRow(tableID) {
+				var table = document.getElementById(tableID);
+				var rowCount = table.rows.length;
+				var row = table.insertRow(rowCount);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				cell1.innerHTML=rowCount;
+				var element2 = document.createElement("input");
+				var element3 = document.createElement("input");
+				element2.type = "text";
+				//console.log(rowCount);
+				//console.log(rowCount);
+				element2.id="quan"+rowCount;
+				element3.type = "text";
+				element3.id="price"+rowCount;
+				cell2.appendChild(element2);
+				cell3.appendChild(element3);
+			}
+			function deleteRow(tableID) {
+				try {
+					var table = document.getElementById(tableID);
+					var rowCount = table.rows.length;
+					if(rowCount==1)
+						return;
+					table.deleteRow(rowCount-1);
+
+
+					}
+				catch(e) {
+					alert("No More Rows");
+				}
+			}
+			function dataSubmit(tableID){
+				var table=document.getElementById(tableID);
+				arr=[]
+				for (var i=1;i<table.rows.length;i++)
+				{
+					var data1=document.getElementById("quan"+i);
+					var data2=document.getElementById("price"+i);
+					json={"qty":Number(data1.value),"p/p":Number(data2.value)};
+					arr.push(json);
+				}
+				console.log(arr)
+				json={"name":"Nike","data":arr};
+				text = JSON.stringify(json);
+   				var el = document.createElement('a');
+   				el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+   				el.setAttribute('download', json["name"]+'.json');
+   				el.click();
+			}
+		</SCRIPT>
+	</HEAD>
+	<BODY>
+		<INPUT type="button" value="Add Row" onclick="addRow('dataTable')" />
+
+		<INPUT type="button" value="Delete Row" onclick="deleteRow('dataTable')" />
+
+		<TABLE id="dataTable" width="350px" border="1">
+			<tr>
+				<th>No.</th>
+				<th>Quantity</th>
+				<th>Price per Item</th>
+			</tr>
+			<TR>
+				<TD> 1 </TD>
+				<TD> <INPUT id="quan1" type="text" /> </TD>
+				<TD> <INPUT id="price1" type="text" /> </TD>
+			</TR>
+		</TABLE>
+		<INPUT type="button" value="Submit" onclick="dataSubmit('dataTable')" />
+
+	</BODY>
+</HTML>
